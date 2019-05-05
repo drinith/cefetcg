@@ -32,13 +32,13 @@ def calculaNormalFace(_face):
 
 def pirameaCone():
     
-    lado = 20
+    lado = 4
      
     #glColor3fv(cores[vertex])
     #Desenhar cada vertice
   
 
-    glBegin(GL_TRIANGLES)
+    glBegin(GL_QUADS)
     for i in range(lado):#numero de lados
         
         #glColor3fv(cores[vertex])
@@ -46,7 +46,7 @@ def pirameaCone():
         
         face.extend([(0,1,0),(cos(2*pi*i/lado) ,-1,sin(2*pi*i/lado)),(cos(2*pi*(i+1)/lado), -1,sin(2*pi*(i+1)/lado))])
         
-        calculaNormalFace(face)
+        glNormal3fv(calculaNormalFace(face))
         
         for vertex in face:
     	    glVertex3fv(vertex)
