@@ -36,7 +36,7 @@ def init():
     glShadeModel(GL_SMOOTH)
     glEnable(GL_DEPTH_TEST)
     glEnable(GL_MULTISAMPLE)
-    ply = OBJ("bun_zipper_res4.ply")
+    ply = PLY("bun_zipper_res4.ply")
 
 def main():
     glutInit(sys.argv)
