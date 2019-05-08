@@ -38,19 +38,20 @@ def pirameaCone():
     #Desenhar cada vertice
   
 
-    glBegin(GL_QUADS)
+    glBegin(GL_TRIANGLES)
     for i in range(lado):#numero de lados
         
         #glColor3fv(cores[vertex])
         #Desenhar cada vertice
         
-        face.extend([(0,1,0),(cos(2*pi*i/lado) ,-1,sin(2*pi*i/lado)),(cos(2*pi*(i+1)/lado), -1,sin(2*pi*(i+1)/lado))])
+        face =[(0,1,0),(cos(2*pi*i/lado) ,-1,sin(2*pi*i/lado)),(cos(2*pi*(i+1)/lado), -1,sin(2*pi*(i+1)/lado))]
         
         glNormal3fv(calculaNormalFace(face))
         
         for vertex in face:
     	    glVertex3fv(vertex)
 
+        
     glEnd()
     
 
