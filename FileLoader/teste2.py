@@ -81,11 +81,11 @@ class PLY:
          
   
             glBegin(GL_POLYGON)
-            for i in face:
+                           
+            glNormal3fv(self.calculaNormalFace(face))
                 
-                glNormal3fv(self.calculaNormalFace(i))
-                
-                glVertex3fv(self.vertices[i[0]],self.vertices[i[1]],self.vertices[i[2]])
+            glVertex3fv(self.vertices[face[0]],self.vertices[face[1]],self.vertices[face[2]])
+            
             glEnd()
         glDisable(GL_TEXTURE_2D)
         glEndList()
