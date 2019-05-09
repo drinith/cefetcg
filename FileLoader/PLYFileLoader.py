@@ -31,6 +31,7 @@ class PLY:
         cComecoVertices=False
         cComecoFaces=False
         material = None
+        
         for line in open(filename, "r"):
             if line.startswith('#'): continue
             values = line.split()
@@ -45,8 +46,10 @@ class PLY:
             if(cComecoVertices==True and self.quantidadeVertices<=countVertice):
                 counVerticest+=1
                 v = list(map(float, values[1:4]))
+                print (v)
                 if swapyz:
                     v = v[0], v[2], v[1]
+                    
                 self.vertices.append(v)
                         
             if values[0] == 'v':

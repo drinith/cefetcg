@@ -1,8 +1,107 @@
 from OpenGL.GLUT import *
 from OpenGL.GLU import *
 from OpenGL.GL import *
-from OBJFileLoader import *
-from PLYFileLoader import *
+import math
+
+
+def MTL(filename):
+    contents = {}
+    mtl = None
+    for line in open(filename, "r"):
+        if line.startswith('#'): continue
+        values = line.split()
+        if not values: continue
+        if values[0] == 'newmtl':
+            mtl = contents[values[1]] = {}
+        elif mtl is None:
+            raise ValueError("mtl file doesn't start with newmtl stmt")
+        elif values[0] == 'map_Kd':
+            pass
+        else:
+            mtl[values[0]] = list(map(float, values[1:]))
+    return contents
+  
+class PLY:
+    def __init__(self, filename, swapyz=False):
+        """Loads a Wavefront OBJ file. """
+        self.vertices = []
+        self.normals = []
+        self.texcoords = []
+        self.faces = []
+        self.quantidadeVertices=1
+        self.quantidadeFaces=1
+        countVertices=0
+        countFaces=0
+        cComecoVertices=False
+        cComecoFaces=False
+        material = None
+        
+        for line in open(filename, "r"):
+            if line.startswith('PLY'): continue
+            values = line.split()
+            if not values: continue
+            
+            if(values[0]=="element" and values[1]=="vertex" ):
+                self.quantidadeVertices=int(values[2])-1
+            if(values[0]=="element" and values[1]=="face" ):
+                self.quantidadeFaces=int(values[2])-1
+            
+            if(values[0]=="end_header"):
+                cComecoVertices=True
+            #preenchendo os valores do vertices
+            if(values[0]!="end_header" and cComecoVertices==True and countVertices <= self.quantidadeVertices):
+                countVertices+=1
+                v = list(map(float, values[1:4]))
+                
+                if swapyz:
+                    v = v[0], v[2], v[1]
+                    
+                self.vertices.append(v)
+            
+            if (self.quantidadeVertices<=countVertices):
+                cComecoFaces=True
+
+            if(values[0]=="3" and cComecoFaces==True and countFaces<=self.quantidadeFaces):
+                countFaces+=1
+                face = []
+                texcoords = []
+                norms = []
+                self.faces.append([int(values[1]),int(values[2]),int(values[3])])
+                
+                
+
+            
+  
+        self.gl_list = glGenLists(1)
+        glNewList(self.gl_list, GL_COMPILE)
+        glFrontFace(GL_CCW)
+        for face in self.faces:
+            #vertices, normals, texture_coords, material = face
+  
+         
+  
+            glBegin(GL_POLYGON)
+            for i in face:
+                
+                glNormal3fv(self.calculaNormalFace(i))
+                
+                glVertex3fv(self.vertices[i[0]],self.vertices[i[1]],self.vertices[i[2]])
+            glEnd()
+        glDisable(GL_TEXTURE_2D)
+        glEndList()
+
+    def calculaNormalFace(self,face):
+        x = 0
+        y = 1
+        z = 2
+        v0 = self.vertices[face[0]]
+        v1 = self.vertices[face[1]]
+        v2 = self.vertices[face[2]]
+        U = ( v2[x]-v0[x], v2[y]-v0[y], v2[z]-v0[z] )
+        V = ( v1[x]-v0[x], v1[y]-v0[y], v1[z]-v0[z] )
+        N = ( (U[y]*V[z]-U[z]*V[y]),(U[z]*V[x]-U[x]*V[z]),(U[x]*V[y]-U[y]*V[x]))
+        NLength = math.sqrt(N[x]*N[x]+N[y]*N[y]+N[z]*N[z])
+        return ( N[x]/NLength, N[y]/NLength, N[z]/NLength)
 
 def display():
     global ply
