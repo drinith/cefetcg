@@ -51,7 +51,7 @@ class PLY:
             #preenchendo os valores do vertices
             if(values[0]!="end_header" and cComecoVertices==True and countVertices <= self.quantidadeVertices):
                 countVertices+=1
-                v = list(map(float, values[1:4]))
+                v = list(map(float, values[0:3]))
                 
                 if swapyz:
                     v = v[0], v[2], v[1]
@@ -64,29 +64,22 @@ class PLY:
             if(values[0]=="3" and cComecoFaces==True and countFaces<=self.quantidadeFaces):
                 countFaces+=1
                 face = []
-                texcoords = []
-                norms = []
+               
                 self.faces.append([int(values[1]),int(values[2]),int(values[3])])
-                
-                
-
-            
   
         self.gl_list = glGenLists(1)
         glNewList(self.gl_list, GL_COMPILE)
         glFrontFace(GL_CCW)
+        glBegin(GL_POLYGON)
         for face in self.faces:
             #vertices, normals, texture_coords, material = face
-  
-         
-  
-            glBegin(GL_POLYGON)
-                           
+       
             glNormal3fv(self.calculaNormalFace(face))
                 
-            glVertex3fv(self.vertices[face[0]],self.vertices[face[1]],self.vertices[face[2]])
-            
-            glEnd()
+            for vertex in face:
+                glVertex3fv(self.vertices[vertex])
+  
+        glEnd()    
         glDisable(GL_TEXTURE_2D)
         glEndList()
 
@@ -141,7 +134,7 @@ def main():
     glutInit(sys.argv)
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH | GLUT_MULTISAMPLE)
     glutInitWindowSize(800,600)
-    glutCreateWindow("Obj")
+    glutCreateWindow("PLY")
     glutReshapeFunc(reshape)
     glutDisplayFunc(display)
     glutTimerFunc(50,timer,1)
