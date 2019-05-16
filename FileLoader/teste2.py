@@ -113,7 +113,7 @@ def reshape(w,h):
     gluPerspective(45,float(w)/float(h),0.1,50.0)
     glMatrixMode(GL_MODELVIEW)
     glLoadIdentity()
-    gluLookAt(0,1,10,0,0,0,0,1,0)
+    gluLookAt(0,1,1,0,0,0,0,1,0)
 
 def init():
     global ply
