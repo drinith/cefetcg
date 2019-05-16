@@ -70,7 +70,7 @@ class PLY:
         self.gl_list = glGenLists(1)
         glNewList(self.gl_list, GL_COMPILE)
         glFrontFace(GL_CCW)
-        glBegin(GL_POLYGON)
+        glBegin(GL_TRIANGLES)
         for face in self.faces:
             #vertices, normals, texture_coords, material = face
        
@@ -128,7 +128,7 @@ def init():
     glShadeModel(GL_SMOOTH)
     glEnable(GL_DEPTH_TEST)
     glEnable(GL_MULTISAMPLE)
-    ply = PLY("bun_zipper_res4.ply")
+    ply = PLY("bun_zipper.ply")
 
 def main():
     glutInit(sys.argv)
