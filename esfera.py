@@ -6,7 +6,7 @@ import sys
 def display():
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
     glRotatef(2,1,3,0)
-    glutSolidSphere(2,50,50);
+    glutSolidSphere(2,50,50)
     glutSwapBuffers()
  
 def timer(i):
